@@ -1,5 +1,7 @@
-### GET request to example server
-GET https://examples.http-client.intellij.net/get
-    ?generated-in=IntelliJ IDEA
+### Say Hello
+GRPC localhost:50051/com.david.grpcdemo.HelloService/sayHello
+Content-Type: application/json
 
-###
+{
+  "name": "World"
+}

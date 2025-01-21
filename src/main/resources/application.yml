@@ -1,3 +1,8 @@
-spring.application.name=grpc-demo
-grpc.server.port=50051
-server.port=8080
+spring:
+  application:
+    name: grpc-demo
+grpc:
+  server:
+    port: 50051
+server:
+  port: 8080

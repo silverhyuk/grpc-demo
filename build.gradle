@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.4.1'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'com.david'
@@ -24,12 +25,45 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/net.devh/grpc-spring-boot-starter
+    implementation 'net.devh:grpc-spring-boot-starter:3.1.0.RELEASE'
+// https://mvnrepository.com/artifact/io.grpc/grpc-netty-shaded
+    implementation 'io.grpc:grpc-netty-shaded:1.69.1'
+// https://mvnrepository.com/artifact/io.grpc/grpc-stub
+    implementation 'io.grpc:grpc-stub:1.69.1'
+    implementation 'io.grpc:grpc-protobuf:1.69.1'
+// https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java
+    implementation 'com.google.protobuf:protobuf-java:4.29.3'
+
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation 'org.hibernate.validator:hibernate-validator:8.0.0.Final'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.24.0'
+    }
+    plugins { // gRPC 관련 코드 생성을 위한 플러그인 지정
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.69.1"
+        }
+    }
+    generateProtoTasks { // 자동화 작업을 정의
+        all().each { task -> // 모든 protobuf 파일에 대상으로
+            task.plugins {
+                grpc {} // grpc 플러그인 활성화
+            }
+        }
+    }
+}
+bootRun {
+    jvmArgs = ['-Duser.timezone=Asia/Seoul']
 }
 
 tasks.named('test') {
